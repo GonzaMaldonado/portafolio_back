@@ -11,7 +11,7 @@ class BaseModel(models.Model):
         abstract = True
 
 class Category(BaseModel):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=40)
     image = models.ImageField(upload_to='posts/categories/')
     slug = models.SlugField(unique=True, max_length=40)
     featured = models.BooleanField(default=False)
@@ -26,7 +26,7 @@ class Category(BaseModel):
 
 class Article(BaseModel):
     title = models.CharField(max_length=55)
-    introduction = models.CharField(max_length=255)
+    introduction = models.CharField(max_length=255, default='')
     slug = models.SlugField(unique=True, max_length=55)
     image = models.ImageField(upload_to='posts/articles/')
     body = CKEditor5Field('Text', config_name='extends')
