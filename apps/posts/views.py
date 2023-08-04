@@ -32,21 +32,25 @@ def category_detail(request, slug):
     serializer = ArticleSerializer(articles, many=True)
     return Response({"articles": serializer.data})
 
-class ArticleDetail(viewsets.ModelViewSet):
-    serializer_class = RatingSerializer
-
-    def get_queryset(self):
+@api_view(['GET'])
+def article_detail(request, slug):
         
-        article = get_object_or_404(Article,
-                                    slug=self.kwargs['slug'],
-                                    status=True)
-        ratings = Rating.objects.filter(article_id=article.id)
-        serializer_article = ArticleSerializer(article, many=False)
-        serializer_rating = RatingSerializer(ratings, many=True)
-        return Response({'article': serializer_article.data, 'comment': serializer_rating.data})
+    article = get_object_or_404(Article,
+                                slug=slug,
+                                status=True)
+    ratings = Rating.objects.filter(article_id=article.id)
+    serializer_article = ArticleSerializer(article, many=False)
+    serializer_rating = RatingSerializer(ratings, many=True)
+    return Response({'article': serializer_article.data, 'comment': serializer_rating.data})
     
 
+class RatingViewSet(viewsets.ModelViewSet):
+    serializer_class = RatingSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = Rating.objects.all()
+
     def get_object(self):
+        
         comment = super().get_object()
 
         if comment.user.id != self.request.user.id:
@@ -57,13 +61,12 @@ class ArticleDetail(viewsets.ModelViewSet):
 
     
     def create(self, request, *args, **kwargs):
-        self.permission_classes = [IsAuthenticated]
         
         data = request.data.copy()
         data['article_id'] = get_object_or_404(Article, slug=self.kwargs['slug'])
         data['user'] = request.user.id
         
-        rating = RatingSerializer(data=data)
+        rating = self.serializer_class(data=data)
         if rating.is_valid():
             rating.save()
             return Response(rating.data, status=status.HTTP_201_CREATED)
