@@ -39,7 +39,7 @@ class UserViewSet(viewsets.ModelViewSet):
         user = super().get_object()
 
         if user.id != self.request.user.id:
-            return self.permission_denied('User unauthorized')
+            return self.permission_denied(self.request, 'User unauthorized')
         return user
 
 @api_view(['GET'])

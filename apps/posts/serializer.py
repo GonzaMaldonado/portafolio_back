@@ -9,6 +9,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ArticleSerializer(serializers.ModelSerializer):
+    user_id = serializers.ReadOnlyField(source='user.username')
     
     class Meta:
         model = Article
@@ -16,7 +17,9 @@ class ArticleSerializer(serializers.ModelSerializer):
 
 
 class RatingSerializer(serializers.ModelSerializer):
-    
+    user_id = serializers.ReadOnlyField(source='user.username')
+    article_id = serializers.ReadOnlyField(source='article.title')
+
     class Meta:
         model = Rating
         fields = '__all__'
