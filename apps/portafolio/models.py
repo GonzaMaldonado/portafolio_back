@@ -6,7 +6,7 @@ from datetime import date
 class User(AbstractUser, PermissionsMixin):
     username = models.CharField(max_length=25, unique=True)
     email = models.EmailField(unique=True)
-    photo = models.ImageField(upload_to='portafolio/users/', blank=True, null=True)
+    photo = models.ImageField(upload_to='portafolio/users/', default='portafolio/users/user.png', blank=True, null=True)
     birthday = models.DateField(blank=True, null=True, validators=[MaxValueValidator(date.today())])
 
     def __str__(self) -> str:

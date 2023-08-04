@@ -1,7 +1,6 @@
 from django.db import models
 from apps.portafolio.models import User
-#from ckeditor.fields import RichTextField
-
+from django_ckeditor_5.fields import CKEditor5Field
 
 class Category(models.Model):
     name = models.CharField(max_length=20)
@@ -25,8 +24,7 @@ class Article(models.Model):
     introduction = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, max_length=55)
     image = models.ImageField(upload_to='posts/articles/')
-    body = models.TextField()
-    #body = RichTextField()
+    body = CKEditor5Field('Text', config_name='extends')
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     categories = models.ManyToManyField(Category)
     created = models.DateTimeField(auto_now_add=True)

@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from apps.portafolio.models import User, Skill
 
 
@@ -26,6 +27,18 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        token['username'] = user.username
+        token['photo'] = user.photo.url
+        token['is_staff'] = user.is_staff
+
+        return token
 
 
 class UserSerializer(serializers.ModelSerializer):
