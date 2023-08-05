@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 @api_view(['POST'])
-def register(self, request):
+def register(request):
     user = RegisterSerializer(data=request.data)
 
     if user.is_valid():
