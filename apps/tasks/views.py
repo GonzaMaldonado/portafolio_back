@@ -23,7 +23,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         return task
     
     def get_queryset(self):
-        return Task.objects.filter(user=self.request.user, completed__isnull=True).order_by('-important')
+        return Task.objects.filter(user=self.request.user, completed__exact=False).order_by('-important')
 
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
@@ -37,17 +37,8 @@ class TaskViewSet(viewsets.ModelViewSet):
                 'task': serializer.data
             }, status=status.HTTP_201_CREATED)
 
-    @action(methods=['post'], detail=True)
-    def completed_task(self, request):
-        data = request.data.copy()
-        data['completed'] = timezone.now()
-        serializer = self.serializer_class(instance=self.get_object(), data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'message': 'Completed task', 'task': serializer.data})
-
     @action(methods=['get'], detail=False)
     def completed_tasks(self, request):
-        tasks = Task.objects.filter(user=request.user, completed__isnull=False)
+        tasks = Task.objects.filter(user=request.user, completed__exact=True)
         serializer = self.serializer_class(tasks, many=True)
         return Response(serializer.data)
