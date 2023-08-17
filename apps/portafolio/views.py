@@ -1,4 +1,5 @@
 
+from django.shortcuts import get_object_or_404
 from .models import User, Skill
 from .serializer import RegisterSerializer, UserSerializer, SkillSerializer, MyTokenObtainPairSerializer
 
@@ -41,6 +42,17 @@ class UserViewSet(viewsets.ModelViewSet):
         if user.id != self.request.user.id:
             return self.permission_denied(self.request, 'User unauthorized')
         return user
+
+@api_view(['PATCH'])
+def change_password(request, id):
+    user = get_object_or_404(User, id=id)
+    pasword = request.data['password']
+    user.set_password(password)
+    serializer = UserSerializer(instance=User , data=user)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def get_skills(request):
