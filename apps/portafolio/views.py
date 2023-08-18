@@ -43,16 +43,15 @@ class UserViewSet(viewsets.ModelViewSet):
             return self.permission_denied(self.request, 'User unauthorized')
         return user
 
-@api_view(['PATCH'])
+@api_view(['POST'])
 def change_password(request, id):
-    user = get_object_or_404(User, id=id)
-    pasword = request.data['password']
-    user.set_password(password)
-    serializer = UserSerializer(instance=User , data=user)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if request.user.id == id:
+        user = get_object_or_404(User, id=id)
+        password = request.data['password']
+        user.set_password(password)
+        user.save()
+        return Response({"message": "Contraseña cambiada con exito"})
+    return Response({"error": "Error al cambiar contraseña"}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def get_skills(request):

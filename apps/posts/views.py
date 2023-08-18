@@ -23,14 +23,16 @@ def all_categories(request):
     """Obtener todas las categorias de la base de datos."""
     categories = Category.objects.all().order_by('name')
     serializer = CategorySerializer(categories, many=True)
-    return Response({'categories' : serializer.data})
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def category_detail(request, slug):
     """Obtener todos los articulos relacionados a una categoria."""
-    articles = Article.objects.filter(category=slug ,slug=slug)
-    serializer = ArticleSerializer(articles, many=True)
-    return Response({"articles": serializer.data})
+    category = Category.objects.filter(slug=slug)
+    articles = Article.objects.filter(categories=category[0].id)
+    serializer_article = ArticleSerializer(articles, many=True)
+    serializer_category = CategorySerializer(category, many=True)
+    return Response({'articles': serializer_article.data, 'navbar_category': serializer_category.data})
 
 @api_view(['GET'])
 def article_detail(request, slug):
@@ -45,9 +47,10 @@ def article_detail(request, slug):
     
 
 class RatingViewSet(viewsets.ModelViewSet):
+    queryset = Rating.objects.all()
     serializer_class = RatingSerializer
     permission_classes = [IsAuthenticated]
-    queryset = Rating.objects.all()
+
 
     def get_object(self):
         
