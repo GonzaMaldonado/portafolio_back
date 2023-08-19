@@ -28,15 +28,15 @@ def all_categories(request):
 @api_view(['GET'])
 def category_detail(request, slug):
     """Obtener todos los articulos relacionados a una categoria."""
-    category = Category.objects.filter(slug=slug)
-    articles = Article.objects.filter(categories=category[0].id)
+    category = Category.objects.get(slug=slug)
+    articles = Article.objects.filter(categories=category.id)
     serializer_article = ArticleSerializer(articles, many=True)
-    serializer_category = CategorySerializer(category, many=True)
+    serializer_category = CategorySerializer(category, many=False)
     return Response({'articles': serializer_article.data, 'navbar_category': serializer_category.data})
 
 @api_view(['GET'])
 def article_detail(request, slug):
-        
+    """Obtener detalle de un articulo con todos sus comentarios"""
     article = get_object_or_404(Article,
                                 slug=slug,
                                 status=True)
