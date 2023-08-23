@@ -17,8 +17,8 @@ class ArticleSerializer(serializers.ModelSerializer):
 
 
 class RatingSerializer(serializers.ModelSerializer):
-    user_id = serializers.ReadOnlyField(source='user.username')
-    article_id = serializers.ReadOnlyField(source='article.title')
+    user = serializers.ReadOnlyField(source='user.username')
+    article = serializers.ReadOnlyField(source='article.title')
 
     class Meta:
         model = Rating

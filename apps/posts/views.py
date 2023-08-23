@@ -40,7 +40,7 @@ def article_detail(request, slug):
     article = get_object_or_404(Article,
                                 slug=slug,
                                 status=True)
-    ratings = Rating.objects.filter(article_id=article.id)
+    ratings = Rating.objects.filter(article=article.id)
     serializer_article = ArticleSerializer(article, many=False)
     serializer_rating = RatingSerializer(ratings, many=True)
     return Response({'article': serializer_article.data, 'comment': serializer_rating.data})
@@ -66,8 +66,10 @@ class RatingViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         
         data = request.data.copy()
-        data['article_id'] = get_object_or_404(Article, slug=self.kwargs['slug'])
+        article = get_object_or_404(Article, id=data['article'])
+        data['article'] = article.id
         data['user'] = request.user.id
+        print(data)
         
         rating = self.serializer_class(data=data)
         if rating.is_valid():
