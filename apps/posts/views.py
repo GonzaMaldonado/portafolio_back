@@ -67,7 +67,8 @@ class RatingViewSet(viewsets.ModelViewSet):
         
         data = request.data.copy()
         article = get_object_or_404(Article, id=data['article'])
-        data['article'] = article.id
+        print(article)
+        data['article'] = int(article.id)
         data['user'] = request.user.id
         print(data)
         

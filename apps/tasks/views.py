@@ -36,6 +36,7 @@ class TaskViewSet(viewsets.ModelViewSet):
                 'message': 'Task created successfully',
                 'task': serializer.data
             }, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
     @action(methods=['get'], detail=False)
     def completed_tasks(self, request):

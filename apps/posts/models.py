@@ -43,8 +43,7 @@ class Rating(BaseModel):
     comment = models.CharField(max_length=255)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(blank=True, null=True)
+
 
     def __str__(self):
         return self.user.username
