@@ -36,6 +36,7 @@ THIRDS_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'drf_yasg',
     'django_ckeditor_5',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 INSTALLED_APPS = BASE_APPS + MY_APPS + THIRDS_APPS

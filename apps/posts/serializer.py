@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Category, Article, Rating
+from apps.portafolio.models import User
 
 class CategorySerializer(serializers.ModelSerializer):
     
@@ -9,8 +10,8 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ArticleSerializer(serializers.ModelSerializer):
-    user_id = serializers.ReadOnlyField(source='user.username')
-    
+    user_id = serializers.StringRelatedField(read_only=True)
+
     class Meta:
         model = Article
         fields = '__all__'
@@ -18,7 +19,7 @@ class ArticleSerializer(serializers.ModelSerializer):
 
 class RatingSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
-    article = serializers.ReadOnlyField(source='article.title')
+    #user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
 
     class Meta:
         model = Rating

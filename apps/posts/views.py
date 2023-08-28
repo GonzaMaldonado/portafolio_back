@@ -47,13 +47,12 @@ def article_detail(request, slug):
     
 
 class RatingViewSet(viewsets.ModelViewSet):
-    queryset = Rating.objects.all()
     serializer_class = RatingSerializer
+    queryset = Rating.objects.all()
     permission_classes = [IsAuthenticated]
 
 
-    def get_object(self):
-        
+    def get_object(self): 
         comment = super().get_object()
 
         if comment.user.id != self.request.user.id:
@@ -61,20 +60,10 @@ class RatingViewSet(viewsets.ModelViewSet):
 
         return comment
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
-    
-    def create(self, request, *args, **kwargs):
-        
-        data = request.data.copy()
-        article = get_object_or_404(Article, id=data['article'])
-        print(article)
-        data['article'] = int(article.id)
-        data['user'] = request.user.id
-        print(data)
-        
-        rating = self.serializer_class(data=data)
-        if rating.is_valid():
-            rating.save()
-            return Response(rating.data, status=status.HTTP_201_CREATED)
-        
-        return Response({'error': rating.errors}, status=status.HTTP_400_BAD_REQUEST)
+"""
+    def create(self, request, *args, **kwargs): 
+        request.data['user'] = request.user
+        return super().create(request, *args, **kwargs)"""

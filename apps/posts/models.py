@@ -39,8 +39,8 @@ class Article(BaseModel):
 
 
 class Rating(BaseModel):
-    value = models.FloatField()
-    comment = models.CharField(max_length=255)
+    score = models.FloatField()
+    comment = models.TextField(max_length=255)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
