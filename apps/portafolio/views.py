@@ -1,5 +1,5 @@
-
 from django.shortcuts import get_object_or_404
+from django.conf import settings
 from .models import User, Skill
 from .serializer import RegisterSerializer, UserSerializer, SkillSerializer, MyTokenObtainPairSerializer
 
@@ -55,7 +55,38 @@ def change_password(request, id):
 
 @api_view(['GET'])
 def get_skills(request):
-
     skills = Skill.objects.all()
     serializer = SkillSerializer(skills , many=True)
     return Response(serializer.data)
+
+
+        
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
+@api_view(['POST'])
+def send_email(request):
+    name = request.data.get('name')
+    email = request.data.get('email')
+    message = request.data.get('message')
+
+    if not name or not email or not message:
+        return Response({'error': 'All fields are required'})
+
+    mail = Mail(
+        from_email=email,
+        to_emails='gnmaldo06@gmail.com',
+        subject='Nuevo mensaje de tu sitio web',
+        html_content=f'<strong>Nombre:</strong> {name}<br><strong>Email:</strong> {email}<br><strong>Mensaje:</strong> {message}'
+    )
+
+    try:
+        sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
+        response = sg.send(mail)
+        print(response.status_code)
+        print(response.body)
+        print(response.headers)
+        return Response({'success': True})
+    except Exception as e:
+        return Response({'error': str(e)})
+
