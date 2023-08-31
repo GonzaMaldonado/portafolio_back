@@ -10,6 +10,9 @@ from rest_framework.permissions import IsAuthenticated
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
 @api_view(['POST'])
 def register(request):
     user = RegisterSerializer(data=request.data)
@@ -60,22 +63,19 @@ def get_skills(request):
     return Response(serializer.data)
 
 
-        
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
-
 @api_view(['POST'])
 def send_email(request):
-    name = request.data.get('name')
-    email = request.data.get('email')
-    message = request.data.get('message')
+    name = request.data.get('name', '')
+    email = request.data.get('email', '')
+    message = request.data.get('message', '')
 
     if not name or not email or not message:
         return Response({'error': 'All fields are required'})
 
+    # from_email debe ser el email que se utiliza en sendgrid y to_emails no puede ser el mismo, asi que tuve que mandarlo a mi email personal
     mail = Mail(
-        from_email=email,
-        to_emails='gnmaldo06@gmail.com',
+        from_email='gnmaldo06@gmail.com',
+        to_emails='nahuel.maldonado.gonzalo@gmail.com',
         subject='Nuevo mensaje de tu sitio web',
         html_content=f'<strong>Nombre:</strong> {name}<br><strong>Email:</strong> {email}<br><strong>Mensaje:</strong> {message}'
     )
@@ -83,10 +83,6 @@ def send_email(request):
     try:
         sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
         response = sg.send(mail)
-        print(response.status_code)
-        print(response.body)
-        print(response.headers)
-        return Response({'success': True})
+        return Response({'success': True, 'status': response.status_code})
     except Exception as e:
         return Response({'error': str(e)})
-

@@ -263,10 +263,10 @@ CKEDITOR_5_CONFIGS = {
 }
 
 # Configuración del servidor SMTP
-SENDGRID_API_KEY = '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'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+
