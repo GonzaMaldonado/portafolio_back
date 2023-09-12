@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(blank=True, max_length=255, null=True)),
                 ('important', models.BooleanField(default=False)),
                 ('created', models.DateTimeField(auto_now_add=True)),
-                ('completed', models.DateField(blank=True, null=True)),
+                ('completed', models.BooleanField(default=False)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),

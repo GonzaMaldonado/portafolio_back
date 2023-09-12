@@ -21,9 +21,4 @@ class Migration(migrations.Migration):
             name='time_limit',
             field=models.DateTimeField(blank=True, null=True, validators=[django.core.validators.MinValueValidator(datetime.datetime(2023, 8, 4, 19, 30, 46, 703155))]),
         ),
-        migrations.AlterField(
-            model_name='task',
-            name='completed',
-            field=models.BooleanField(default=False),
-        ),
     ]

@@ -270,7 +270,7 @@ CKEDITOR_5_CONFIGS = {
     }
 }
 
-#Cloudinary para las imágenes
+#Cloudinary para imágenes
 import cloudinary
           
 cloudinary.config( 
