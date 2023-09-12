@@ -143,6 +143,7 @@ AUTH_USER_MODEL = 'portafolio.User'
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
+    'https://portafolio-front-brown.vercel.app/'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
