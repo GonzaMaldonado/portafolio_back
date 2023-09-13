@@ -2,6 +2,7 @@
 # exit on error
 set -o errexit
 
-pip install -r requirements.txt
+pip install -r requirements.
 
+python manage.py collectstatic
 python manage.py migrate

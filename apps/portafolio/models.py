@@ -9,6 +9,10 @@ class User(AbstractUser, PermissionsMixin):
     photo = models.ImageField(upload_to='portafolio/users/', blank=True, null=True)
     birthday = models.DateField(blank=True, null=True, validators=[MaxValueValidator(date.today())])
 
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
+
+
     def __str__(self) -> str:
         return self.username
 
