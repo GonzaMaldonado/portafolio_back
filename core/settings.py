@@ -45,6 +45,7 @@ THIRDS_APPS = [
     'drf_yasg',
     'django_ckeditor_5',
     'django_cleanup.apps.CleanupConfig',
+    'cloudinary',
 ]
 
 INSTALLED_APPS = BASE_APPS + MY_APPS + THIRDS_APPS
@@ -52,6 +53,9 @@ INSTALLED_APPS = BASE_APPS + MY_APPS + THIRDS_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
+
     'django.contrib.sessions.middleware.SessionMiddleware',
 
     'corsheaders.middleware.CorsMiddleware',
@@ -120,14 +124,22 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
+
 if not DEBUG:
     STATIC_ROOT= os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_STORAGE= 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-STATIC_URL = 'static/'
+#Ubicacion de los archivos estaticos
 STATIC_ROOT = BASE_DIR / 'static'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
 
-MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#Url para los archivos media
+MEDIA_URL = '/media/'
+#Ubicacion del archivo media
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Default primary key field type
@@ -143,7 +155,7 @@ AUTH_USER_MODEL = 'portafolio.User'
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
-    'https://portafolio-front-brown.vercel.app/'
+    'https://portafolio-front-brown.vercel.app'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -156,7 +168,7 @@ REST_FRAMEWORK = {
   }
 
 SIMPLE_JWT = {
-      'ACCESS_TOKEN_LIFETIME': timedelta(hours=5),
+      'ACCESS_TOKEN_LIFETIME': timedelta(hours=8),
       'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
       'ROTATE_REFRESH_TOKENS': True,
       'BLACKLIST_AFTER_ROTATION': True,
