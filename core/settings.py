@@ -131,9 +131,7 @@ if not DEBUG:
 
 #Ubicacion de los archivos estaticos
 STATIC_ROOT = BASE_DIR / 'static'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
+
 
 #Url para los archivos media
 MEDIA_URL = '/media/'
