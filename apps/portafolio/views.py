@@ -30,10 +30,6 @@ def register(request):
     }, status=status.HTTP_400_BAD_REQUEST)
 
 
-class Login(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
-
-
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
