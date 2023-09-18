@@ -309,8 +309,6 @@ cloudinary.config(
 
 )
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
 
 # Configuración del servidor SMTP
 SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
