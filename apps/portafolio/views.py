@@ -30,23 +30,7 @@ def register(request):
         'error': user.errors
     }, status=status.HTTP_400_BAD_REQUEST)
 
-class Login(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
 
-    def post(self, request, *args, **kwargs):
-        username = request.data.get('username', '')
-        password = request.data.get('password', '')
-        user = authenticate(username=username, password=password)
-
-        if user:
-            serializer = self.serializer_class(data=request.data)
-            if serializer.is_valid():
-                return Response({
-                    'refresh': serializer.validated_data['refresh'],
-                    'access': serializer.validated_data['access']
-                })
-            else:
-                return Response({'error': 'Credenciales invalidas'}, status=status.HTTP_401_UNAUTHORIZED)
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
