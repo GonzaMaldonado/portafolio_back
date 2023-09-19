@@ -45,7 +45,6 @@ THIRDS_APPS = [
     'drf_yasg',
     'django_ckeditor_5',
     'django_cleanup.apps.CleanupConfig',
-    'cloudinary',
 ]
 
 INSTALLED_APPS = BASE_APPS + MY_APPS + THIRDS_APPS
@@ -54,7 +53,6 @@ INSTALLED_APPS = BASE_APPS + MY_APPS + THIRDS_APPS
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-
 
     'django.contrib.sessions.middleware.SessionMiddleware',
 
@@ -197,7 +195,8 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_LIFETIME": timedelta(hours=8),
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 
-    "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
+    "TOKEN_OBTAIN_SERIALIZER": "apps.portafolio.serializer.MyTokenObtainPairSerializer",
+    #"TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
     "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
     "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
     "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
@@ -296,18 +295,6 @@ CKEDITOR_5_CONFIGS = {
         }
     }
 }
-
-#Cloudinary para imágenes
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-          
-cloudinary.config( 
-  cloud_name = "dumrusbp4", 
-  api_key = "654822579299642", 
-  api_secret = os.environ.get('API_KEY_CLOUDINARY') 
-
-)
 
 
 # Configuración del servidor SMTP

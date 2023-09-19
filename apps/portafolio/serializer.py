@@ -35,11 +35,23 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
 
+        # Add custom claims
+        token['is_staff'] = user.is_staff
+        token['photo'] = user.photo
+
+        return token
+""" En producción no se porque me arroja un error 500
+ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
         token['username'] = user.username
-        token['photo'] = user.photo.url
+        token['photo'] = user.photo
         token['is_staff'] = user.is_staff
 
         return token
+"""
 
 
 class UserSerializer(serializers.ModelSerializer):
