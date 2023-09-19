@@ -37,7 +37,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         # Add custom claims
         token['is_staff'] = user.is_staff
-
+        if user.photo != '':
+            token['photo'] = user.photo.url
+        token['photo'] = ''
+        
         return token
 
 
