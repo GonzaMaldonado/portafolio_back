@@ -39,7 +39,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['is_staff'] = user.is_staff
         if user.photo != '':
             token['photo'] = user.photo.url
-        token['photo'] = ''
+        else:
+            token['photo'] = ''
         
         return token
 
