@@ -1,4 +1,3 @@
-
 from datetime import timedelta
 from pathlib import Path
 import os
@@ -52,12 +51,9 @@ INSTALLED_APPS = BASE_APPS + MY_APPS + THIRDS_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-
+    'whitenoise.middleware.WhiteNoiseMiddleware',               # whitenoise
     'django.contrib.sessions.middleware.SessionMiddleware',
-
-    'corsheaders.middleware.CorsMiddleware',
-
+    'corsheaders.middleware.CorsMiddleware',                    # django-cors-headers
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -122,7 +118,7 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 
 if not DEBUG:
     STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -133,9 +129,9 @@ STATIC_ROOT = BASE_DIR / 'static'
 
 
 #Url para los archivos media
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 #Ubicacion del archivo media
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / 'media/'
 
 
 # Default primary key field type
