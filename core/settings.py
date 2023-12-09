@@ -120,18 +120,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
 
+#Ubicacion de los archivos estaticos
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 if not DEBUG:
     STATIC_ROOT = BASE_DIR / 'staticfiles'
     STATICFILES_STORAGE= 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-#Ubicacion de los archivos estaticos
-STATIC_ROOT = BASE_DIR / 'static'
-
 
 #Url para los archivos media
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 #Ubicacion del archivo media
-MEDIA_ROOT = BASE_DIR / 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Default primary key field type
