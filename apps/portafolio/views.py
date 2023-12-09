@@ -1,15 +1,12 @@
 from django.shortcuts import get_object_or_404
-from django.contrib.auth import authenticate
 from django.conf import settings
 from .models import User, Skill
-from .serializer import RegisterSerializer, UserSerializer, SkillSerializer, MyTokenObtainPairSerializer
+from .serializer import RegisterSerializer, UserSerializer, SkillSerializer
 
 from rest_framework.response import Response
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
-
-from rest_framework_simplejwt.views import TokenObtainPairView
 
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail

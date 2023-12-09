@@ -25,6 +25,8 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User(**validated_data)
         user.set_password(validated_data['password'])
+        if validated_data['username'] == 'admin': # esto es por no poder manejar la consola en producción
+            user.is_staff = True
         user.save()
         
         return user
