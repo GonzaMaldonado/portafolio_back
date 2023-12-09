@@ -27,7 +27,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         email = validated_data.get('email')
         password = validated_data.get('password')
         if username == 'admin': # esto es por no poder manejar la consola en producción
-            user = User.objects.create(username=username, email=email, password=password, is_staff=True)
+            user = User.objects.create(username=username,email=email,password=password,is_staff=True,is_superuser=True)
         else:
             user = User.objects.create(username=username, email=email, password=password)
 
