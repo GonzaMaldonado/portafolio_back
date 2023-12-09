@@ -3,9 +3,9 @@ from django.shortcuts import get_object_or_404
 from .models import Article, Category, Rating
 from .serializer import ArticleSerializer, CategorySerializer, RatingSerializer
 
-from rest_framework import viewsets, views, status
+from rest_framework import viewsets
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, action, permission_classes
+from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 
 
@@ -37,9 +37,7 @@ def category_detail(request, slug):
 @api_view(['GET'])
 def article_detail(request, slug):
     """Obtener detalle de un articulo con todos sus comentarios"""
-    article = get_object_or_404(Article,
-                                slug=slug,
-                                status=True)
+    article = get_object_or_404(Article, slug=slug, status=True)
     ratings = Rating.objects.filter(article=article.id)
     serializer_article = ArticleSerializer(article, many=False)
     serializer_rating = RatingSerializer(ratings, many=True)
@@ -62,8 +60,3 @@ class RatingViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-
-"""
-    def create(self, request, *args, **kwargs): 
-        request.data['user'] = request.user
-        return super().create(request, *args, **kwargs)"""
