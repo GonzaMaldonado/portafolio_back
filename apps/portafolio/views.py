@@ -1,32 +1,39 @@
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from .models import User, Skill
-from .serializer import RegisterSerializer, UserSerializer, SkillSerializer
+from .serializer import RegisterSerializer, UserSerializer, SkillSerializer, MyTokenObtainPairSerializer
 
 from rest_framework.response import Response
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 
+from drf_yasg.utils import swagger_auto_schema
+
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 
+
 @api_view(['POST'])
 def register(request):
-    user = RegisterSerializer(data=request.data)
+    serializer = RegisterSerializer(data=request.data)
 
-    if user.is_valid():
-        user.save()
+    if serializer.is_valid():
+        serializer.save()
+        login = MyTokenObtainPairSerializer(data=request.data)
+        if login.is_valid():
+            return Response({
+                'access': login.validated_data.get('access'),
+                'refresh': login.validated_data.get('refresh'),
+                'message': 'Successfully registered user'
+                }, status=status.HTTP_201_CREATED)
         return Response({
-            'message': 'Successfully registered user',
-            'user': user.data
-        }, status=status.HTTP_201_CREATED)
-        
+                'message': 'Usuario registrado, pero no se pudo obtener tokens'
+                }, status=status.HTTP_204_NO_CONTENT)
     return Response({
-        'message': 'There are errors in the form',
-        'error': user.errors
+        'error': serializer.errors,
+        'message': 'User not created!'
     }, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -40,6 +47,12 @@ class UserViewSet(viewsets.ModelViewSet):
         if user.id != self.request.user.id:
             return self.permission_denied(self.request, 'User unauthorized')
         return user
+
+    @swagger_auto_schema(auto_schema=None)
+    def create(self, request, *args, **kwargs):
+        """ Al tener Register para la creación de usuarios, no necesito un create """
+        pass
+
 
 @api_view(['POST'])
 def change_password(request, id):
@@ -56,7 +69,6 @@ def get_skills(request):
     skills = Skill.objects.all()
     serializer = SkillSerializer(skills , many=True)
     return Response(serializer.data)
-
 
 @api_view(['POST'])
 def send_email(request):
